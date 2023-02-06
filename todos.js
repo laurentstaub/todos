@@ -1,11 +1,10 @@
+const config = require("./lib/config");
 const express = require("express");
 // morgan is a logging middleware
 const morgan = require("morgan");
-// flash is a middleware that allows us to store messages in the session
-// and display them on the next request
+// flash is a middleware that allows us to store messages in the session and display them on the next request
 const flash = require("express-flash");
-// express-session is a middleware that allows us to store data in the
-// session
+// express-session is a middleware that allows us to store data in the session
 const session = require("express-session");
 const { body, validationResult } = require("express-validator");
 const store = require("connect-loki");
@@ -13,8 +12,8 @@ const PgPersistence = require("./lib/pg-persistence");
 const catchError = require("./lib/catch-error");
 
 const app = express();
-const host = "localhost";
-const port = 3000;
+const host = config.HOST;
+const port = config.PORT;
 const LokiStore = store(session);
 
 app.set("views", "./views");
@@ -39,7 +38,7 @@ app.use(session({
   name: "launch-school-todos-session-id",
   resave: false,
   saveUninitialized: true,
-  secret: "this is not very secure",
+  secret: config.SECRET,
   store: new LokiStore({}),
 }));
 
